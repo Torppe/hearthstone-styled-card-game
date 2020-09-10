@@ -4,21 +4,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Minion : MonoBehaviour, ISelectable {
+    public Player owner;
     public CardStats stats;
     public LayerMask enemyLayer;
 
     public int damage;
     public int health;
 
-    public event Action OnDamaged;
+    private bool selectable = true;
 
     private GameObject target = null;
     private GameObject line;
     private LineRenderer lr;
 
+    public event Action OnDamaged;
+
     public void Start() {
         damage = stats.damage;
         health = stats.health;
+
+        owner.OnStartTurnTable += Refresh;
+        owner.OnEndTurn += OnEndTurn;
+    }
+
+    private void OnDisable() {
+        owner.OnStartTurnTable -= Refresh;
+        owner.OnEndTurn -= OnEndTurn;
     }
 
     public void Attack() {
@@ -29,6 +40,8 @@ public class Minion : MonoBehaviour, ISelectable {
 
         targetMinion.Damage(damage);
         Damage(targetMinion.damage);
+
+        selectable = false;
     }
 
     public void Damage(int damage) {
@@ -37,6 +50,10 @@ public class Minion : MonoBehaviour, ISelectable {
 
         if (health <= 0)
             Destroy(gameObject);
+    }
+
+    public bool IsSelectable() {
+        return selectable;
     }
 
     public void OnSelect() {
@@ -69,5 +86,13 @@ public class Minion : MonoBehaviour, ISelectable {
         lr.startColor = Color.red;
         lr.endColor = Color.red;
         lr.SetPosition(0, transform.position);
+    }
+
+    private void Refresh() {
+        selectable = true;
+    }
+
+    private void OnEndTurn() {
+        selectable = false;
     }
 }

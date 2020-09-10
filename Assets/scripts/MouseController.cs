@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MouseController : MonoBehaviour {
-    public GameObject cardSlot;
-    public LayerMask cardLayer;
-    public LayerMask dropZoneLayer;
-
     private Camera mainCamera;
     private Plane plane;
     private Ray ray;
@@ -20,7 +16,9 @@ public class MouseController : MonoBehaviour {
     void Update() {
         if(Input.GetMouseButtonDown(0)) {
             ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out var hitInfo, Mathf.Infinity) && hitInfo.transform.TryGetComponent<ISelectable>(out var selectable)) {
+            if(Physics.Raycast(ray, out var hitInfo, Mathf.Infinity) 
+                && hitInfo.transform.TryGetComponent<ISelectable>(out var selectable)
+                && selectable.IsSelectable()) {
                 selectedObject = selectable;
                 selectedObject.OnSelect();
             }

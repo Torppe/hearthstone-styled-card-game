@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface ICard {
     void Activate();
-    void SetCardStats(CardStats cardStats);
     CardStats GetCardStats();
+    void SetCardStats(CardStats cardStats);
+    Player GetOwner();
+    void SetOwner(Player owner);
 }

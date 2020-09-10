@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MinionCard : MonoBehaviour, ICard {
+    public Player owner;
     public CardStats stats;
     public GameObject minionPrefab;
 
     public void Activate() {
-        GameObject minion = Instantiate(minionPrefab, transform.parent);
-        minion.transform.SetSiblingIndex(transform.GetSiblingIndex());
-        minion.GetComponent<Minion>().stats = stats;
+        GameObject go = Instantiate(minionPrefab, transform.parent);
+        go.transform.SetSiblingIndex(transform.GetSiblingIndex());
+
+        Minion minion = go.GetComponent<Minion>();
+        minion.stats = stats;
+        minion.owner = owner;
 
         Destroy(gameObject);
     }
@@ -19,4 +23,12 @@ public class MinionCard : MonoBehaviour, ICard {
     }
     
     public CardStats GetCardStats() => stats;
+
+    public void SetOwner(Player owner) {
+        this.owner = owner;
+    }
+
+    public Player GetOwner() {
+        return this.owner;
+    }
 }

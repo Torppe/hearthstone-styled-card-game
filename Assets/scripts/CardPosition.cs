@@ -6,11 +6,23 @@ public class CardPosition : MonoBehaviour, ISelectable {
     public GameObject placeholderPrefab;
     public LayerMask dropZoneLayer;
 
+    private bool selectable = true;
     private GameObject placeholder;
     private ICard card;
 
     public void Start() {
         card = GetComponent<ICard>();
+        card.GetOwner().OnStartTurn += Enable;
+        card.GetOwner().OnEndTurn += Disable;
+    }
+
+    private void OnDisable() {
+        card.GetOwner().OnStartTurn -= Enable;
+        card.GetOwner().OnEndTurn -= Disable;
+    }
+
+    public bool IsSelectable() {
+        return selectable;
     }
 
     public void OnSelect() {
@@ -56,11 +68,17 @@ public class CardPosition : MonoBehaviour, ISelectable {
         transform.SetParent(placeholder.transform.parent);
         transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
 
-        //transform.position = new Vector3(transform.position.x, transform.position.y, 0);
-
         Destroy(placeholder);
 
         if (placeholder.transform.parent.GetComponent<DropZone>().isTable)
             card.Activate();
+    }
+
+    void Disable() {
+        selectable = false;
+    }
+
+    void Enable() {
+        selectable = true;
     }
 }
