@@ -3,21 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Minion : MonoBehaviour, ISelectable {
+public class Minion : MonoBehaviour, ISelectable, IDamageable {
     public Player owner;
     public CardStats stats;
     public LayerMask enemyLayer;
 
     public int damage;
     public int health;
+    
+    public event Action OnDamaged;
 
     private bool selectable = true;
 
     private GameObject target = null;
     private GameObject line;
     private LineRenderer lr;
-
-    public event Action OnDamaged;
 
     public void Start() {
         damage = stats.damage;
@@ -36,20 +36,12 @@ public class Minion : MonoBehaviour, ISelectable {
         if (target == null)
             return;
 
-        Minion targetMinion = target.GetComponent<Minion>();
+        IDamageable damageable = target.GetComponent<IDamageable>();
 
-        targetMinion.Damage(damage);
-        Damage(targetMinion.damage);
+        int incomingDamage = damageable.TakeDamage(damage);
+        TakeDamage(incomingDamage);
 
         selectable = false;
-    }
-
-    public void Damage(int damage) {
-        health -= damage;
-        OnDamaged?.Invoke();
-
-        if (health <= 0)
-            Destroy(gameObject);
     }
 
     public bool IsSelectable() {
@@ -77,6 +69,15 @@ public class Minion : MonoBehaviour, ISelectable {
         Destroy(line);
     }
 
+    public int TakeDamage(int incomingDamage) {
+        health -= incomingDamage;
+        OnDamaged?.Invoke();
+
+        if (health <= 0)
+            Destroy(gameObject);
+
+        return damage;
+    }
     private void CreateLine() {
         line = new GameObject();
         line.transform.position = transform.position;
@@ -87,7 +88,6 @@ public class Minion : MonoBehaviour, ISelectable {
         lr.endColor = Color.red;
         lr.SetPosition(0, transform.position);
     }
-
     private void Refresh() {
         selectable = true;
     }

@@ -27,6 +27,6 @@ public class MinionDisplay : MonoBehaviour {
     }
 
     public void UpdateDisplay() {
-        healthText.text = minion.health.ToString();
+        healthText.text = minion.health <= 0 ? "0" : minion.health.ToString();
     }
 }
