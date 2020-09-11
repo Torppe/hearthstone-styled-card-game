@@ -4,9 +4,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IDamageable {
+    public bool isPlayer = true;
+
     public int health = 30;
     public int damage = 0;
     public int armor = 0;
+
+    public ManaPool manaPool;
 
     public event Action OnStartTurnTable;
     public event Action OnStartTurn;
@@ -18,6 +22,7 @@ public class Player : MonoBehaviour, IDamageable {
     public void StartTurn() {
         OnStartTurnTable?.Invoke();
         OnStartTurn?.Invoke();
+        manaPool.IncreaseMana();
     }
 
     public void EndTurn() {

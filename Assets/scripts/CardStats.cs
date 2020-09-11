@@ -12,6 +12,4 @@ public class CardStats : ScriptableObject {
     public int health;
     public int damage;
     public int cost;
-
-    public ICard effect;
 }

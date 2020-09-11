@@ -13,7 +13,7 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
     
     public event Action OnDamaged;
 
-    private bool selectable = true;
+    private bool disabled = false;
 
     private GameObject target = null;
     private GameObject line;
@@ -41,11 +41,11 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
         int incomingDamage = damageable.TakeDamage(damage);
         TakeDamage(incomingDamage);
 
-        selectable = false;
+        disabled = false;
     }
 
     public bool IsSelectable() {
-        return selectable;
+        return !disabled && owner.isPlayer;
     }
 
     public void OnSelect() {
@@ -53,6 +53,9 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
     }
 
     public void OnDrag(Vector3 position, Ray ray) {
+        if (disabled)
+            return;
+
         if(Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, enemyLayer)) {
             if(hitInfo.transform.gameObject != target)
                 target = hitInfo.transform.gameObject;
@@ -65,6 +68,9 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
     }
 
     public void OnDeselect() {
+        if (disabled)
+            return;
+
         Attack();
         Destroy(line);
     }
@@ -89,10 +95,14 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
         lr.SetPosition(0, transform.position);
     }
     private void Refresh() {
-        selectable = true;
+        disabled = false;
     }
 
     private void OnEndTurn() {
-        selectable = false;
+        if(line != null)
+            Destroy(line);
+
+        target = null;
+        disabled = true;
     }
 }

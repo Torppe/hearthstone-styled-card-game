@@ -15,6 +15,8 @@ public class MinionCard : MonoBehaviour, ICard {
         minion.stats = stats;
         minion.owner = owner;
 
+        owner.manaPool.unspentMana -= stats.cost;
+
         Destroy(gameObject);
     }
 

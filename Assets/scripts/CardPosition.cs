@@ -6,9 +6,13 @@ public class CardPosition : MonoBehaviour, ISelectable {
     public GameObject placeholderPrefab;
     public LayerMask dropZoneLayer;
 
-    private bool selectable = true;
+    private bool dragging = false;
+    private bool disabled = false;
     private GameObject placeholder;
     private ICard card;
+
+    private Transform originalParent;
+    private int originalSiblingIndex;
 
     public void Start() {
         card = GetComponent<ICard>();
@@ -22,21 +26,33 @@ public class CardPosition : MonoBehaviour, ISelectable {
     }
 
     public bool IsSelectable() {
-        return selectable;
+        return !disabled && card.GetCardStats().cost <= card.GetOwner().manaPool.unspentMana;
     }
 
     public void OnSelect() {
         placeholder = Instantiate(placeholderPrefab, transform.parent);
         placeholder.transform.SetSiblingIndex(transform.GetSiblingIndex());
+
+        originalParent = transform.parent;
+        originalSiblingIndex = transform.GetSiblingIndex();
+        dragging = true;
+
         transform.SetParent(null);
     }
 
     public void OnDrag(Vector3 position, Ray ray) {
+        if (disabled)
+            return;
+
         transform.position = position;
         PositionPlaceholder(ray);
     }
 
     public void OnDeselect() {
+        if (disabled)
+            return;
+
+        dragging = false;
         PlaceCard();
     }
 
@@ -74,11 +90,23 @@ public class CardPosition : MonoBehaviour, ISelectable {
             card.Activate();
     }
 
+    public void CancelPlacement() {
+        if (dragging) {
+            dragging = false;
+
+            placeholder.transform.SetParent(originalParent);
+            placeholder.transform.SetSiblingIndex(originalSiblingIndex);
+
+            PlaceCard();
+        }
+    }
+
     void Disable() {
-        selectable = false;
+        CancelPlacement();
+        disabled = true;
     }
 
     void Enable() {
-        selectable = true;
+        disabled = false;
     }
 }
