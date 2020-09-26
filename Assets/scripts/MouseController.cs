@@ -16,7 +16,7 @@ public class MouseController : MonoBehaviour {
     void Update() {
         if(Input.GetMouseButtonDown(0)) {
             ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(ray, out var hitInfo, Mathf.Infinity) 
+            if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity) 
                 && hitInfo.transform.TryGetComponent<ISelectable>(out var selectable)
                 && selectable.IsSelectable()) {
                 selectedObject = selectable;

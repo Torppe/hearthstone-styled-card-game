@@ -6,43 +6,110 @@ public class AnimationController : MonoBehaviour
 {
     public float animationSpeed = 1;
     public AnimationCurve animationCurve;
+    public Queue<IEnumerator> animationQueue = new Queue<IEnumerator>();
 
     private float timer = 0;
     private bool attacking = false;
+    private bool attacked = false;
+    private bool damageShown = false;
+    private bool risen = false;
 
     private Vector3 startPosition;
     private Vector3 targetPosition;
 
-    void Start()
-    {
-        
+    private MinionDisplay minionDisplay;
+
+    void Start() {
+        minionDisplay = GetComponent<MinionDisplay>();
     }
 
-    void Update()
-    {
-        Attack();
-    }
-
-    public void StartAttack(Vector3 target) {
+    public void StartAttack(GameObject target) {
         if (attacking)
             return;
 
-        attacking = true;
-        startPosition = gameObject.transform.position;
-        targetPosition = target;
+        StartCoroutine(AttackCoroutine(target));
     }
 
-    void Attack() {
-        if (!attacking)
-            return;
+    private IEnumerator AttackCoroutine(GameObject target) {
+        AnimationController targetAnimationController = target.GetComponent<AnimationController>();
 
-        transform.position = Vector3.Lerp(startPosition, targetPosition, animationCurve.Evaluate(timer));
+        attacked = false;
+        damageShown = false;
+        risen = false;
+        attacking = true;
 
-        if (timer >= 1) {
-            timer = 0;
-            attacking = false;
-        } else {
-            timer += Time.deltaTime * animationSpeed;
+        while(!risen) {
+            Rise();
+            yield return null;
+        }
+
+        targetPosition = target.transform.position;
+        startPosition = gameObject.transform.position;
+
+        while(!attacked) {
+            Attack(targetAnimationController);
+            yield return null;
+        }
+
+        while(risen) {
+            Lower();
+            yield return null;
+        }
+
+        attacking = false;
+
+        if (animationQueue.Count > 0)
+            StartCoroutine(animationQueue.Dequeue());
+
+        if (targetAnimationController.animationQueue.Count > 0)
+            StartCoroutine(targetAnimationController.animationQueue.Dequeue());
+    }
+
+    public IEnumerator PlayDeathAnimation() {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);
+    }
+
+    public IEnumerator PlayDamageTaken(int damage) {
+        minionDisplay.UpdateDisplay();
+        minionDisplay.damageTaken.gameObject.SetActive(true);
+        minionDisplay.damageTaken.text = damage.ToString();
+
+        yield return new WaitForSeconds(2f);
+
+        minionDisplay.damageTaken.gameObject.SetActive(false);
+    }
+
+    private void Rise() {
+        transform.position -= Vector3.forward * Time.deltaTime * 12f;
+        if (transform.position.z <= -2f) {
+            transform.position = new Vector3(transform.position.x, transform.position.y, -2f);
+            risen = true;
         }
     }
+
+    private void Lower() {
+        transform.position += Vector3.forward * Time.deltaTime * 12f;
+        if(transform.position.z >= 0) {
+            risen = false;
+        }
+    }
+
+    private void Attack(AnimationController target) {
+        transform.position = Vector3.Lerp(startPosition, targetPosition, animationCurve.Evaluate(timer));
+
+        timer += Time.deltaTime * animationSpeed;
+
+        if (Vector3.Distance(transform.position, targetPosition) <= 0.01f && !damageShown) {
+            StartCoroutine(animationQueue.Dequeue());
+            StartCoroutine(target.animationQueue.Dequeue());
+            damageShown = true;
+        }
+
+        if (timer >= 1f) {
+            attacked = true;
+            timer = 0;
+        }
+    }
+
 }

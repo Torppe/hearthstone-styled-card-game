@@ -11,10 +11,9 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
     public int damage;
     public int health;
     
-    public event Action OnDamaged;
-
     private bool disabled = false;
 
+    private AnimationController animationController;
     private GameObject target = null;
     private GameObject line;
     private LineRenderer lr;
@@ -22,6 +21,7 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
     public void Start() {
         damage = stats.damage;
         health = stats.health;
+        animationController = GetComponent<AnimationController>();
 
         owner.OnStartTurnTable += Refresh;
         owner.OnEndTurn += OnEndTurn;
@@ -37,11 +37,13 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
             return;
 
         IDamageable damageable = target.GetComponent<IDamageable>();
-
         int incomingDamage = damageable.TakeDamage(damage);
+
         TakeDamage(incomingDamage);
 
-        disabled = false;
+        animationController.StartAttack(target);
+
+        disabled = true;
     }
 
     public bool IsSelectable() {
@@ -77,10 +79,11 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
 
     public int TakeDamage(int incomingDamage) {
         health -= incomingDamage;
-        OnDamaged?.Invoke();
+        animationController.animationQueue.Enqueue(animationController.PlayDamageTaken(incomingDamage));
 
-        if (health <= 0)
-            Destroy(gameObject);
+        if (health <= 0) {
+            animationController.animationQueue.Enqueue(animationController.PlayDeathAnimation());
+        }
 
         return damage;
     }

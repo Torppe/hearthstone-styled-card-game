@@ -7,7 +7,8 @@ public class DropZone : MonoBehaviour {
     public bool isTable = false;
 
     private void Update() {
-        UpdateZOrder();
+        if(!isTable)
+            UpdateZOrder();
     }
 
     void UpdateZOrder() {

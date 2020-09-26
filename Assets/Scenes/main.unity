@@ -171,7 +171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 274116235508697172, guid: 8db1f3161add4f14ba1bf89f5b353dd1, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 274116235508697172, guid: 8db1f3161add4f14ba1bf89f5b353dd1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -413,8 +413,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 31
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 41.97
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -512,7 +512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5865660649421956316, guid: 37c5eac5c8de3464ea1e340768ba67aa, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 5865660649421956316, guid: 37c5eac5c8de3464ea1e340768ba67aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -585,7 +585,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 274116235508697172, guid: 8db1f3161add4f14ba1bf89f5b353dd1, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 274116235508697172, guid: 8db1f3161add4f14ba1bf89f5b353dd1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -940,7 +940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6116527909909000935, guid: bf7d0d9194685854986cc424c44a3551, type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 6116527909909000935, guid: bf7d0d9194685854986cc424c44a3551, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1156,7 +1156,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2023106914111718089, guid: 35942a55daa65474aa7daf81ad5432b5, type: 3}
       propertyPath: turnTime
-      value: 4
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2023106914111718089, guid: 35942a55daa65474aa7daf81ad5432b5, type: 3}
       propertyPath: player
@@ -1439,7 +1439,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5865660649421956316, guid: 37c5eac5c8de3464ea1e340768ba67aa, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5865660649421956316, guid: 37c5eac5c8de3464ea1e340768ba67aa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1512,7 +1512,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6116527909909000935, guid: bf7d0d9194685854986cc424c44a3551, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6116527909909000935, guid: bf7d0d9194685854986cc424c44a3551, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
