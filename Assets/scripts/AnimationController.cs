@@ -70,6 +70,7 @@ public class AnimationController : MonoBehaviour
     public IEnumerator PlayDeathAnimation() {
         yield return new WaitForSeconds(2f);
         Destroy(gameObject);
+        Destroy(gameObject.GetComponent<MinionPosition>().minionSlot.gameObject);
     }
 
     public IEnumerator PlayDamageTaken(int damage) {
