@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class AnimationController : MonoBehaviour
@@ -7,6 +8,7 @@ public class AnimationController : MonoBehaviour
     public float animationSpeed = 1;
     public AnimationCurve animationCurve;
     public Queue<IEnumerator> animationQueue = new Queue<IEnumerator>();
+    public TextMeshPro damageTaken;
 
     private float timer = 0;
     private bool attacking = false;
@@ -17,10 +19,10 @@ public class AnimationController : MonoBehaviour
     private Vector3 startPosition;
     private Vector3 targetPosition;
 
-    private MinionDisplay minionDisplay;
+    private IDisplay display;
 
     void Start() {
-        minionDisplay = GetComponent<MinionDisplay>();
+        display = GetComponent<IDisplay>();
     }
 
     public void StartAttack(GameObject target) {
@@ -61,7 +63,7 @@ public class AnimationController : MonoBehaviour
         if (animationQueue.Count > 0)
             StartCoroutine(animationQueue.Dequeue());
 
-        if (targetAnimationController.animationQueue.Count > 0)
+        if (targetAnimationController?.animationQueue.Count > 0)
             StartCoroutine(targetAnimationController.animationQueue.Dequeue());
     }
 
@@ -71,13 +73,14 @@ public class AnimationController : MonoBehaviour
     }
 
     public IEnumerator PlayDamageTaken(int damage) {
-        minionDisplay.UpdateDisplay();
-        minionDisplay.damageTaken.gameObject.SetActive(true);
-        minionDisplay.damageTaken.text = damage.ToString();
+        display.UpdateDisplay();
+        print(gameObject);
+        damageTaken.gameObject.SetActive(true);
+        damageTaken.text = damage.ToString();
 
         yield return new WaitForSeconds(2f);
 
-        minionDisplay.damageTaken.gameObject.SetActive(false);
+        damageTaken.gameObject.SetActive(false);
     }
 
     private void Rise() {
@@ -101,8 +104,10 @@ public class AnimationController : MonoBehaviour
         timer += Time.deltaTime * animationSpeed;
 
         if (Vector3.Distance(transform.position, targetPosition) <= 0.01f && !damageShown) {
-            StartCoroutine(animationQueue.Dequeue());
-            StartCoroutine(target.animationQueue.Dequeue());
+            if(animationQueue.Count > 0)
+                StartCoroutine(animationQueue.Dequeue());
+            if (target.animationQueue.Count > 0)
+                StartCoroutine(target.animationQueue.Dequeue());
             damageShown = true;
         }
 

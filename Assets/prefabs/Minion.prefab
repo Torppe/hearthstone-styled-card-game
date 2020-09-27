@@ -708,6 +708,7 @@ GameObject:
   - component: {fileID: 2168600302871600182}
   - component: {fileID: 1894562778657076243}
   - component: {fileID: 7748086275286646991}
+  - component: {fileID: 4301398129158028942}
   - component: {fileID: -3328696874275997492}
   m_Layer: 10
   m_Name: Minion
@@ -785,8 +786,21 @@ MonoBehaviour:
   artworkImage: {fileID: 2965439346614918205}
   damageText: {fileID: 2965439347520503090}
   healthText: {fileID: 2965439345906818352}
-  damageTaken: {fileID: 8944593943316617604}
   isDead: 0
+--- !u!114 &4301398129158028942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8992326790320940288}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35b50218233089a428664ba943eaf694, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minionSlot: {fileID: 0}
+  movementSpeed: 5
 --- !u!114 &-3328696874275997492
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,3 +874,4 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  damageTaken: {fileID: 8944593943316617604}

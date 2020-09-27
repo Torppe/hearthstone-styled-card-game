@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface ICard {
-    void Activate();
+    void Activate(GameObject placeholder);
     CardStats GetCardStats();
     void SetCardStats(CardStats cardStats);
     Player GetOwner();

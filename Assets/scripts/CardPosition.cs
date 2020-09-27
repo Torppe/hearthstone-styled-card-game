@@ -84,10 +84,11 @@ public class CardPosition : MonoBehaviour, ISelectable {
         transform.SetParent(placeholder.transform.parent);
         transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
 
-        Destroy(placeholder);
-
-        if (placeholder.transform.parent.GetComponent<DropZone>().isTable)
-            card.Activate();
+        if (placeholder.transform.parent.GetComponent<DropZone>().isTable) {
+            card.Activate(placeholder);
+        } else {
+            Destroy(placeholder);
+        }
     }
 
     public void CancelPlacement() {

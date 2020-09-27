@@ -4,18 +4,16 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MinionDisplay : MonoBehaviour {
+public class MinionDisplay : MonoBehaviour, IDisplay {
     public Image artworkImage;
 
     public TextMeshPro damageText;
     public TextMeshPro healthText;
-    public TextMeshPro damageTaken;
+    //public TextMeshPro damageTaken;
 
     public bool isDead = false;
 
     private Minion minion;
-
-    private Queue<int> damageQueue = new Queue<int>();
 
     void Start() {
         minion = GetComponent<Minion>();

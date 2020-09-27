@@ -15,9 +15,14 @@ public class Player : MonoBehaviour, IDamageable {
     public event Action OnStartTurnTable;
     public event Action OnStartTurn;
     public event Action OnEndTurn;
-    public event Action OnDamaged;
 
     public static event Action<Player> OnAnyPlayerDeath;
+
+    private AnimationController animationController;
+
+    void Start() {
+        animationController = GetComponent<AnimationController>();
+    }
 
     public void StartTurn() {
         OnStartTurnTable?.Invoke();
@@ -31,10 +36,14 @@ public class Player : MonoBehaviour, IDamageable {
 
     public int TakeDamage(int incomingDamage) {
         health -= incomingDamage;
-        OnDamaged?.Invoke();
 
-        if (health <= 0)
+        if (incomingDamage > 0)
+            animationController.animationQueue.Enqueue(animationController.PlayDamageTaken(incomingDamage));
+
+        if (health <= 0) {
+            animationController.animationQueue.Enqueue(animationController.PlayDeathAnimation());
             OnAnyPlayerDeath(this);
+        }
 
         return damage;
     }

@@ -67,8 +67,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d2d8b652b5f654793431a838617f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  owner: {fileID: 0}
   stats: {fileID: 11400000, guid: bfb2e4e17627faa428f79c7ba0c9e2c6, type: 2}
   minionPrefab: {fileID: 8992326790320940288, guid: c24b5b2d8404dcb499732af4e5e16147, type: 3}
+  minionSlot: {fileID: 8992326790320940288, guid: 3bc1b46b96a67aa47991daa735c8569d, type: 3}
 --- !u!114 &3858079574583063423
 MonoBehaviour:
   m_ObjectHideFlags: 0

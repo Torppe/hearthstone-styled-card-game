@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PlayerDisplay : MonoBehaviour {
+public class PlayerDisplay : MonoBehaviour, IDisplay {
     //public Image artworkImage;
 
     public TextMeshPro damageText;
@@ -19,12 +19,6 @@ public class PlayerDisplay : MonoBehaviour {
         armorText.text = player.armor == 0 ? "" : player.armor.ToString();
         healthText.text = player.health.ToString();
         //artworkImage.sprite = player.artwork;
-
-        player.OnDamaged += UpdateDisplay;
-    }
-
-    private void OnDisable() {
-        player.OnDamaged -= UpdateDisplay;
     }
 
     public void UpdateDisplay() {

@@ -79,7 +79,9 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
 
     public int TakeDamage(int incomingDamage) {
         health -= incomingDamage;
-        animationController.animationQueue.Enqueue(animationController.PlayDamageTaken(incomingDamage));
+
+        if (incomingDamage > 0)
+            animationController.animationQueue.Enqueue(animationController.PlayDamageTaken(incomingDamage));
 
         if (health <= 0) {
             animationController.animationQueue.Enqueue(animationController.PlayDeathAnimation());
@@ -87,6 +89,7 @@ public class Minion : MonoBehaviour, ISelectable, IDamageable {
 
         return damage;
     }
+
     private void CreateLine() {
         line = new GameObject();
         line.transform.position = transform.position;
